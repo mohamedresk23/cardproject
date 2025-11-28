@@ -1,17 +1,33 @@
 
 // import { Fragment } from 'react/jsx-runtime'
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import './App.css'
 import ProductCard from './components/ProductCard'
 import Modal from './components/UI/Modal';
 import { formInputsList, productList } from './data';
 import Button from './components/UI/Button';
 import Input from './components/UI/Input';
-// import type { IFormInput } from './interfaces';
+import type { IProduct } from './interfaces';
+import type { IFormInput } from './interfaces';
 
 function App() {
   /* -------------------------- STATE & VARIABLES ------------------------- */
+
+    // Default object for product initialization
+  const defaultProductObj = {
+    title: '',
+    description: '',
+    imageURL: '',
+    price: '',
+    colors: [],
+    category: {
+      name: '',
+      imageURL: ''
+    }
+  }
   const [isOpen, setIsOpen] = useState(false);
+  // const [products, setProducts] = useState<IProduct[]>(productList)
+  const [product, setProduct] = useState<IProduct>(defaultProductObj)
 
   /* ---------------------------- HANDLER  --------------------------- */
     function open() {
@@ -22,7 +38,10 @@ function App() {
     setIsOpen(false)
   }
 
-
+const onChangeHandel = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target
+    setProduct({ ...product, [name]: value })
+  }
 
 /**
  * Render Products
@@ -52,7 +71,7 @@ function App() {
           <label htmlFor={input.name} className="font-medium">
             {input.label}
           </label>
-          <Input type={input.type} id={input.name} name={input.name} className="rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-black/80 focus:ring-1 focus:ring-black/80 mb-2"  />
+          <Input type={input.type} id={input.name} name={input.name} value={product[input.name]} onChange={onChangeHandel}  className="rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-black/80 focus:ring-1 focus:ring-black/80 mb-2"  />
           {/* <input
             type={input.type}
             id={input.name}
@@ -72,7 +91,7 @@ function App() {
             </Button>
       <Modal isOpen={isOpen} closeModal={close} title="Edit Product">
          {/* Render Form Inputs */}
-        {renderFormInputs}
+          {renderFormInputs}
         {/* submit button & close button */}
         <div className="flex justify-between items-center space-x-1.5">
        <Button   className="edit-btn group  overflow-hidden w-2/4 bg-green-700 text-white text-xl font-semibold rounded-xl py-2  transition-all duration-200 ease-in-out cursor-pointer relative after:content-[''] after:bg-green-300 after:w-0  after:h-0 after:block after:absolute after:-bottom-12/12 after:-left-4 after:transition-all after:duration-300 after:ease-in-out hover:after:w-[200%] hover:after:h-[250%] after:rounded-3xl after:skew-12">

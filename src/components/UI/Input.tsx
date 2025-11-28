@@ -10,7 +10,7 @@ const Input = ({ ...rest }: IProps) => {
   return (
     // Start the JSX return block.
     <input
-      className="border-[1px] border-gray-300 shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded-lg px-3 py-3 text-md"
+      className="border border-gray-300 shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded-lg px-3 py-3 text-md"
       {...rest}
     />
     // Render an `input` element with a default className for styling and spread all other props passed to the component.
