@@ -1,14 +1,14 @@
 
 // import { Fragment } from 'react/jsx-runtime'
 import { useState, type ChangeEvent } from 'react';
-import './App.css'
-import ProductCard from './components/ProductCard'
+import './App.css';
+import ProductCard from './components/ProductCard';
 import Modal from './components/UI/Modal';
 import { formInputsList, productList } from './data';
 import Button from './components/UI/Button';
 import Input from './components/UI/Input';
 import type { IProduct } from './interfaces';
-import type { IFormInput } from './interfaces';
+// import type { IFormInput } from './interfaces';
 
 function App() {
   /* -------------------------- STATE & VARIABLES ------------------------- */
@@ -30,18 +30,29 @@ function App() {
   const [product, setProduct] = useState<IProduct>(defaultProductObj)
 
   /* ---------------------------- HANDLER  --------------------------- */
-    function open() {
-    setIsOpen(true)
-  }
+      function open() {
+        setIsOpen(true)
+      }
 
-  function close() {
-    setIsOpen(false)
-  }
+      function close() {
+        setIsOpen(false)
+      }
 
-const onChangeHandel = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = event.target
-    setProduct({ ...product, [name]: value })
-  }
+      const onChangeHandel = (event: ChangeEvent<HTMLInputElement>) => {
+        const { value, name } = event.target
+        setProduct({ ...product, [name]: value })
+      }
+
+      const submitHandelar = (event: React.FormEvent) => {
+        event.preventDefault()
+        console.log(product);
+        // You can add further logic to handle the submitted product data
+      }
+
+      const onCancel = () => {
+        setProduct(defaultProductObj);
+        close();
+      }
 
 /**
  * Render Products
@@ -81,33 +92,37 @@ const onChangeHandel = (event: ChangeEvent<HTMLInputElement>) => {
     ) );
   return (
     <main className="container mx-auto ">
-     
       
-       <Button
-              onClick={open}
-              className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-black/30"
-            >
-              Open dialog
-            </Button>
+      <Button
+        onClick={open}
+        className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-black/30">
+        Open dialog
+      </Button>
       <Modal isOpen={isOpen} closeModal={close} title="Edit Product">
-         {/* Render Form Inputs */}
-          {renderFormInputs}
-        {/* submit button & close button */}
-        <div className="flex justify-between items-center space-x-1.5">
-       <Button   className="edit-btn group  overflow-hidden w-2/4 bg-green-700 text-white text-xl font-semibold rounded-xl py-2  transition-all duration-200 ease-in-out cursor-pointer relative after:content-[''] after:bg-green-300 after:w-0  after:h-0 after:block after:absolute after:-bottom-12/12 after:-left-4 after:transition-all after:duration-300 after:ease-in-out hover:after:w-[200%] hover:after:h-[250%] after:rounded-3xl after:skew-12">
-        <span className='absolute z-10 group-hover:text-green-700 transition-all duration-200 ease-in-out'>Submit</span>
-        Submit  
-        </Button>
-        <Button  className="delet-btn  w-2/4 group  bg-rose-700 text-white text-xl font-semibold rounded-xl py-2 overflow-hidden   transition-all duration-200 ease-in-out cursor-pointer relative after:content-[''] after:bg-rose-300 after:w-0  after:h-0 after:block after:absolute after:-bottom-11/12 after:-left-4 after:transition-all after:duration-300 after:ease-in-out hover:after:w-[200%] hover:after:h-[200%] after:rounded-3xl after:skew-12">
-        <span className='absolute z-10 group-hover:text-rose-700 transition-all duration-200 ease-in-out'>Close</span>
-        Close</Button>
-        </div>
+        <form action="" onSubmit={submitHandelar}>
+
+          {/* Render Form Inputs */}
+            {renderFormInputs}
+
+          {/* submit button & close button */}
+            <div className="flex justify-between items-center space-x-1.5">
+              <Button   className="edit-btn group  overflow-hidden w-2/4 bg-green-700 text-white text-xl font-semibold rounded-xl py-2  transition-all duration-200 ease-in-out cursor-pointer relative after:content-[''] after:bg-green-300 after:w-0  after:h-0 after:block after:absolute after:-bottom-12/12 after:-left-4 after:transition-all after:duration-300 after:ease-in-out hover:after:w-[200%] hover:after:h-[250%] after:rounded-3xl after:skew-12" type='submit'>
+                <span className='absolute z-10 group-hover:text-green-700 transition-all duration-200 ease-in-out'>Submit</span>
+                Submit  
+                </Button>
+
+                
+                <Button  className="delet-btn  w-2/4 group  bg-rose-700 text-white text-xl font-semibold rounded-xl py-2 overflow-hidden   transition-all duration-200 ease-in-out cursor-pointer relative after:content-[''] after:bg-rose-300 after:w-0  after:h-0 after:block after:absolute after:-bottom-11/12 after:-left-4 after:transition-all after:duration-300 after:ease-in-out hover:after:w-[200%] hover:after:h-[200%] after:rounded-3xl after:skew-12"  onClick={onCancel}>
+                <span className='absolute z-10 group-hover:text-rose-700 transition-all duration-200 ease-in-out'>Close</span>
+                Close</Button>
+            </div>
+        </form>
 
       </Modal>
 
       
       <div className=' grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4'>
-      {renderProducts}
+        {renderProducts}
       </div>
     </main>
   )
