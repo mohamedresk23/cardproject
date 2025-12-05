@@ -8,6 +8,7 @@ import { formInputsList, productList } from './data';
 import Button from './components/UI/Button';
 import Input from './components/UI/Input';
 import type { IProduct } from './interfaces';
+import { onProductValidation } from './validation';
 // import type { IFormInput } from './interfaces';
 
 function App() {
@@ -46,7 +47,11 @@ function App() {
       const submitHandelar = (event: React.FormEvent) => {
         event.preventDefault()
         console.log(product);
+
         // You can add further logic to handle the submitted product data
+
+        const errors = onProductValidation(product);
+        console.log(errors)
       }
 
       const onCancel = () => {
